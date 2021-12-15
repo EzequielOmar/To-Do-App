@@ -8,11 +8,10 @@ const taskRoutes = require("./routes/api-router");
 
 //app
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // connection String to MongoDB
-const dbURI =
-  "mongodb+srv://todo-api:todo-api@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority";
+const dbURI = `mongodb+srv://todo-api:${process.env.db_pass}@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`;
 
 // connect to mongodb or show error
 mongoose
