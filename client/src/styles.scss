@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+$primary: rgb(194, 194, 194);
+$secondary: rgb(143, 209, 143);
+$third: rgb(238, 238, 238);
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "third": $third,
+);
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+/* Bootstrap Icons */
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
