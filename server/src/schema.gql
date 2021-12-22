@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateFolderInput {
+  name: String!
+}
+
+type Folder {
+  _id: String!
+  name: String!
+}
+
+input ListFolderInput {
+  name: String!
+}
+
+type Mutation {
+  createFolder(payload: CreateFolderInput!): Folder!
+  updateFolder(payload: UpdateFolderInput!): Folder!
+}
+
+type Query {
+  folder(_id: String!): Folder!
+  folders(filters: ListFolderInput): [Folder!]!
+}
+
+input UpdateFolderInput {
+  name: String!
+}
