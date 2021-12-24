@@ -1,8 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateTaskInput, ListTaskInput, UpdateTaskInput } from './task.inputs';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 import { Schema as MongooseSchema } from 'mongoose';
+import { CreateTaskInput, ListTaskInput, UpdateTaskInput } from 'src/graphql';
 
 @Resolver(() => Task)
 export class TaskResolver {

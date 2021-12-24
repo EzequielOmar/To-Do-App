@@ -1,0 +1,34 @@
+input CreateTaskInput {
+  name: String!
+  folder: ID!
+}
+
+type Task {
+  _id: ID!
+  name: String!
+  done: Boolean!
+  folder: Folder!
+}
+
+input ListTaskInput {
+  _id: ID
+  name: String
+  done: Boolean
+  folder: ID
+}
+
+type Mutation {
+  createTask(payload: CreateTaskInput!): Task!
+  deleteTask(_id: ID!): Task!
+  updateTask(payload: UpdateTaskInput!): Task!
+}
+
+type Query {
+  tasks(filters: ListTaskInput): [Task!]!
+}
+
+input UpdateTaskInput {
+  _id: ID!
+  name: String
+  done: Boolean
+}

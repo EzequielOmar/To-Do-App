@@ -3,18 +3,18 @@ input CreateFolderInput {
 }
 
 type Folder {
-  _id: String!
+  _id: ID!
   name: String!
 }
 
 input ListFolderInput {
-  _id: String
+  _id: ID
   name: String
 }
 
 type Mutation {
   createFolder(payload: CreateFolderInput!): Folder!
-  deleteFolder(_id: String!): Folder!
+  deleteFolder(_id: ID!): Folder!
   updateFolder(payload: UpdateFolderInput!): Folder!
 }
 
@@ -23,6 +23,6 @@ type Query {
 }
 
 input UpdateFolderInput {
-  _id: String!
+  _id: ID!
   name: String!
 }

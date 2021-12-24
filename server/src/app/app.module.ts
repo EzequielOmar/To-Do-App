@@ -13,7 +13,7 @@ import { TaskModule } from './task/task.module';
       `mongodb+srv://todo-api:todo-api@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
     ),
     FolderModule,
-    // TaskModule,
+    TaskModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       definitions: {

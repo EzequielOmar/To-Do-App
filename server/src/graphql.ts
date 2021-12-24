@@ -21,6 +21,24 @@ export class UpdateFolderInput {
     name: string;
 }
 
+export class CreateTaskInput {
+    name: string;
+    folder: string;
+}
+
+export class ListTaskInput {
+    _id?: Nullable<string>;
+    name?: Nullable<string>;
+    done?: Nullable<boolean>;
+    folder?: Nullable<string>;
+}
+
+export class UpdateTaskInput {
+    _id: string;
+    name?: Nullable<string>;
+    done?: Nullable<boolean>;
+}
+
 export class Folder {
     _id: string;
     name: string;
@@ -32,10 +50,25 @@ export abstract class IMutation {
     abstract deleteFolder(_id: string): Folder | Promise<Folder>;
 
     abstract updateFolder(payload: UpdateFolderInput): Folder | Promise<Folder>;
+
+    abstract createTask(payload: CreateTaskInput): Task | Promise<Task>;
+
+    abstract deleteTask(_id: string): Task | Promise<Task>;
+
+    abstract updateTask(payload: UpdateTaskInput): Task | Promise<Task>;
 }
 
 export abstract class IQuery {
     abstract folders(filters?: Nullable<ListFolderInput>): Folder[] | Promise<Folder[]>;
+
+    abstract tasks(filters?: Nullable<ListTaskInput>): Task[] | Promise<Task[]>;
+}
+
+export class Task {
+    _id: string;
+    name: string;
+    done: boolean;
+    folder: Folder;
 }
 
 type Nullable<T> = T | null;
