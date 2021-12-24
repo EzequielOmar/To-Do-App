@@ -11,16 +11,18 @@ import { TaskModule } from './task/task.module';
   imports: [
     MongooseModule.forRoot(
       `mongodb+srv://todo-api:todo-api@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
-      //`mongodb+srv://todo-api:${process.env.db_pass}@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
     ),
+    FolderModule,
+    // TaskModule,
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+        outputAs: 'class',
+      },
       playground: true,
       debug: false,
     }),
-    FolderModule,
-    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

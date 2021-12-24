@@ -7,19 +7,19 @@ import { Folder } from '../folder/folder.model';
 @Schema()
 export class Task {
   @Field(() => String)
-  _id: MongooseSchema.Types.ObjectId;
+  _id!: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
   @Prop()
-  name: string;
+  name!: string;
 
   @Field(() => Boolean)
-  @Prop()
-  done: boolean;
+  @Prop({ default: false })
+  done!: boolean;
 
-  @Field(() => String)
+  @Field(() => Folder)
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: Folder.name })
-  folder: MongooseSchema.Types.ObjectId;
+  folder!: Folder;
 }
 
 export type TaskDocument = Task & Document;
