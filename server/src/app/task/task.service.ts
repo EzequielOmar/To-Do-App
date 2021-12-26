@@ -11,7 +11,6 @@ export class TaskService {
 
   create(payload: CreateTaskInput) {
     const newTask = new this.taskModel(payload);
-    console.log(newTask);
     return newTask.save();
   }
 

@@ -42,6 +42,7 @@ export class UpdateTaskInput {
 export class Folder {
     _id: string;
     name: string;
+    ftasks: Task[];
 }
 
 export abstract class IMutation {
@@ -68,7 +69,7 @@ export class Task {
     _id: string;
     name: string;
     done: boolean;
-    folder: Folder;
+    folder: string;
 }
 
 type Nullable<T> = T | null;

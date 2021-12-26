@@ -5,6 +5,7 @@ input CreateFolderInput {
 type Folder {
   _id: ID!
   name: String!
+  ftasks: [Task!]!
 }
 
 input ListFolderInput {

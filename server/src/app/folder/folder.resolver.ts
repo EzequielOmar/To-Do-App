@@ -1,17 +1,25 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 import {
   CreateFolderInput,
+  Folder,
   ListFolderInput,
+  Task,
   UpdateFolderInput,
 } from 'src/graphql';
-
-import { Folder } from './folder.model';
+import { TaskService } from '../task/task.service';
 import { FolderService } from './folder.service';
 
 @Resolver(() => Folder)
 export class FolderResolver {
-  constructor(private fs: FolderService /*, private ts: TaskService*/) {}
+  constructor(private fs: FolderService, private ts: TaskService) {}
 
   @Query(() => [Folder])
   async folders(
@@ -36,9 +44,9 @@ export class FolderResolver {
     return this.fs.delete(_id);
   }
 
-  //@ResolveField('tasks',() => [Task])
-  //async tasks(@Parent() folder: Folder) {
-  //  const { _id } = folder;
-  //  return this.ts.list({ folder });
-  //}
+  @ResolveField('ftasks', () => [Task])
+  async ftasks(@Parent() folder: Folder) {
+    const { _id } = folder;
+    return this.ts.list({ folder: _id });
+  }
 }

@@ -7,7 +7,7 @@ type Task {
   _id: ID!
   name: String!
   done: Boolean!
-  folder: Folder!
+  folder: ID!
 }
 
 input ListTaskInput {
