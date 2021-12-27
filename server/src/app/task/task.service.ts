@@ -27,4 +27,8 @@ export class TaskService {
   delete(_id: MongooseSchema.Types.ObjectId) {
     return this.taskModel.findByIdAndRemove(_id);
   }
+
+  deleteByFolderId(fid: MongooseSchema.Types.ObjectId) {
+    return this.taskModel.deleteMany({ folder: fid });
+  }
 }

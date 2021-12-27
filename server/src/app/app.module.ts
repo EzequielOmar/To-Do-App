@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { FolderModule } from './folder/folder.module';
 import { TaskModule } from './task/task.module';
 
@@ -24,7 +22,5 @@ import { TaskModule } from './task/task.module';
       debug: false,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
