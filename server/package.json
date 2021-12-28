@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "npm run build",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -75,5 +76,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "16.7.0",
+    "npm": "8.2.0"
   }
 }
