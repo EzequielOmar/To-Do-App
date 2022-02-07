@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
-import { CreateTaskInput, ListTaskInput, UpdateTaskInput } from 'src/graphql';
+import { CreateTaskInput, UpdateTaskInput } from 'src/graphql';
 import { Task, TaskDocument } from './task.model';
 
 @Injectable()
@@ -14,8 +14,8 @@ export class TaskService {
     return newTask.save();
   }
 
-  list(filters: ListTaskInput) {
-    return this.taskModel.find({ ...filters }).exec();
+  list(fid: string) {
+    return this.taskModel.find({ folder: fid }).exec();
   }
 
   update(payload: UpdateTaskInput) {

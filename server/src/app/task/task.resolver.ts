@@ -2,16 +2,14 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 import { Schema as MongooseSchema } from 'mongoose';
-import { CreateTaskInput, ListTaskInput, UpdateTaskInput } from 'src/graphql';
+import { CreateTaskInput, UpdateTaskInput } from 'src/graphql';
+import { UseGuards } from '@nestjs/common';
+import { jwtGuard } from '../auth/services/jwtGuard.service';
 
 @Resolver(() => Task)
+@UseGuards(jwtGuard)
 export class TaskResolver {
   constructor(private ts: TaskService) {}
-
-  @Query(() => [Task])
-  async tasks(@Args('filters', { nullable: true }) filters?: ListTaskInput) {
-    return this.ts.list(filters);
-  }
 
   @Mutation(() => Task)
   async createTask(@Args('payload') payload: CreateTaskInput) {

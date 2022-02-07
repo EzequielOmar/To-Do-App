@@ -2,16 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()
-export class Folder {
+export class User {
   _id!: MongooseSchema.Types.ObjectId;
 
   @Prop()
   name!: string;
-
-  @Prop()
-  owner!: string;
 }
 
-export type FolderDocument = Folder & Document;
+export type UserDocument = User & Document;
 
-export const FolderSchema = SchemaFactory.createForClass(Folder);
+export const UserSchema = SchemaFactory.createForClass(User);

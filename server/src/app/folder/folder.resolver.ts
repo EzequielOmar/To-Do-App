@@ -1,35 +1,29 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
   Parent,
-  Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
-import {
-  CreateFolderInput,
-  Folder,
-  ListFolderInput,
-  Task,
-  UpdateFolderInput,
-} from 'src/graphql';
+import { Folder, Task, UpdateFolderInput } from 'src/graphql';
+import { jwtGuard } from '../auth/services/jwtGuard.service';
+import { CurrentUser } from '../auth/services/jwtStrategy.service';
 import { TaskService } from '../task/task.service';
 import { FolderService } from './folder.service';
 
 @Resolver(() => Folder)
+@UseGuards(jwtGuard)
 export class FolderResolver {
   constructor(private fs: FolderService, private ts: TaskService) {}
 
-  @Query(() => [Folder])
-  async folders(
-    @Args('filters', { nullable: true }) filters?: ListFolderInput,
-  ) {
-    return this.fs.list(filters);
-  }
   @Mutation(() => Folder)
-  async createFolder(@Args('payload') payload: CreateFolderInput) {
-    return this.fs.create(payload);
+  async createFolder(
+    @CurrentUser() user: any,
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.fs.create(name, user.thirdPartyId);
   }
 
   @Mutation(() => Folder)
@@ -41,14 +35,12 @@ export class FolderResolver {
   async deleteFolder(
     @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
   ) {
-    await this.ts.deleteByFolderId(_id).then(() => {
-      return this.fs.delete(_id);
-    });
+    return await this.ts.deleteByFolderId(_id).then(() => this.fs.delete(_id));
   }
 
   @ResolveField('ftasks', () => [Task])
   async ftasks(@Parent() folder: Folder) {
     const { _id } = folder;
-    return this.ts.list({ folder: _id });
+    return this.ts.list(_id);
   }
 }

@@ -1,0 +1,13 @@
+type User {
+  _id: ID!
+  name: String!
+  ufolders: [Folder]!
+}
+
+type Mutation {
+  deleteUser: User
+}
+
+type Query {
+  User: User!
+}

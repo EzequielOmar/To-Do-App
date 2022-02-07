@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-import { CreateFolderInput, UpdateFolderInput } from 'src/graphql';
+import { UpdateFolderInput } from 'src/graphql';
 
 import { Folder, FolderDocument } from './folder.model';
 
@@ -11,22 +11,13 @@ export class FolderService {
     @InjectModel(Folder.name) private folderModel: Model<FolderDocument>,
   ) {}
 
-  /*
-  create = async (payload: CreateFolderInput): Promise<any> => {
-    const newFolder = new this.folderModel(payload);
-    return await newFolder.save().catch((e) => {
-      throw new Error('Error al intentar guardar:' + e);
-    });
-  };
-  */
-
-  create(payload: CreateFolderInput) {
-    const newFolder = new this.folderModel(payload);
+  create(name: string, owner: string) {
+    const newFolder = new this.folderModel({ name: name, owner: owner });
     return newFolder.save();
   }
 
-  list(filters: any) {
-    return this.folderModel.find({ ...filters }).exec();
+  list(owner: string) {
+    return this.folderModel.find({ owner: owner }).exec();
   }
 
   update(payload: UpdateFolderInput) {
@@ -37,5 +28,9 @@ export class FolderService {
 
   delete(_id: MongooseSchema.Types.ObjectId) {
     return this.folderModel.findByIdAndRemove(_id);
+  }
+
+  deleteByUserId(uid: string) {
+    return this.folderModel.deleteMany({ owner: uid });
   }
 }

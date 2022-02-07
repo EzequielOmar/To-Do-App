@@ -10,21 +10,14 @@ type Task {
   folder: ID!
 }
 
-input ListTaskInput {
-  _id: ID
-  name: String
-  done: Boolean
-  folder: ID
-}
-
 type Mutation {
   createTask(payload: CreateTaskInput!): Task!
-  deleteTask(_id: ID!): Task!
+  deleteTask(_id: ID!): Task
   updateTask(payload: UpdateTaskInput!): Task!
 }
 
 type Query {
-  tasks(filters: ListTaskInput): [Task!]!
+  tasks(folder: ID!): [Task]!
 }
 
 input UpdateTaskInput {

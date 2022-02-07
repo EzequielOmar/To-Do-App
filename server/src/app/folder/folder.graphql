@@ -1,26 +1,18 @@
-input CreateFolderInput {
-  name: String!
-}
-
 type Folder {
   _id: ID!
   name: String!
-  ftasks: [Task!]!
-}
-
-input ListFolderInput {
-  _id: ID
-  name: String
+  owner: String!
+  ftasks: [Task]!
 }
 
 type Mutation {
-  createFolder(payload: CreateFolderInput!): Folder!
-  deleteFolder(_id: ID!): Folder!
+  createFolder(name: String!): Folder!
+  deleteFolder(_id: ID!): Folder
   updateFolder(payload: UpdateFolderInput!): Folder!
 }
 
 type Query {
-  folders(filters: ListFolderInput): [Folder!]!
+  folders(owner: String!): [Folder]!
 }
 
 input UpdateFolderInput {

@@ -1,5 +1,8 @@
 #backend
 server/node-modules
+server/dist
+server/.env
+
 
 #client
 # compiled output
