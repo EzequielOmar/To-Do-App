@@ -6,7 +6,6 @@ import { MainComponent } from './main/main.component';
 const routes: Routes = [
   { path: '', component: MainComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'auth/error', component: LoginComponent },
 ];
 
 @NgModule({

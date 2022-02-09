@@ -165,6 +165,6 @@ export class MainComponent implements OnInit {
    */
   private redirectToError() {
     this.session.forceLogOut();
-    this.router.navigate(['auth/error']);
+    this.router.navigate(['login']);
   }
 }

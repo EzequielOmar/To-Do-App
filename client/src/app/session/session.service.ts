@@ -10,7 +10,7 @@ export class SessionService {
   logIn(token: string | null): boolean {
     if (token) {
       window.history.pushState('', '', '/');
-      this.setToken(token);
+      sessionStorage.setItem('token', token);
       return true;
     }
     return false;
@@ -21,10 +21,7 @@ export class SessionService {
   }
 
   forceLogOut() {
-    this.setToken('');
-  }
-
-  private setToken(token: string) {
-    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('token', '');
+    sessionStorage.setItem('expired', 'true');
   }
 }

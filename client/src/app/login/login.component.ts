@@ -20,11 +20,16 @@ export class LoginComponent implements OnInit {
   }
 
   private checkKickOut() {
-    if (document.location.href.includes('error')) {
-      this.error = true;
-      setTimeout(() => {
-        this.error = false;
-      }, 5000);
+    if (sessionStorage.getItem('expired')) {
+      sessionStorage.setItem('expired', '');
+      this.showErrorTokenExpired();
     }
+  }
+
+  private showErrorTokenExpired() {
+    this.error = true;
+    setTimeout(() => {
+      this.error = false;
+    }, 5000);
   }
 }
