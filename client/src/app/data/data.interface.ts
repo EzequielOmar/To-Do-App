@@ -1,15 +1,20 @@
 import gql from 'graphql-tag';
 
 export const GET_ALL_DATA_QUERY = gql`
-  query folders {
-    folders {
+  query User {
+    User {
       _id
       name
-      ftasks {
+      ufolders {
         _id
         name
-        done
-        folder
+        owner
+        ftasks {
+          _id
+          name
+          done
+          folder
+        }
       }
     }
   }
@@ -17,9 +22,10 @@ export const GET_ALL_DATA_QUERY = gql`
 
 export const NEW_FOLDER_MUTATION = gql`
   mutation createFolder($name: String!) {
-    createFolder(payload: { name: $name }) {
+    createFolder(name: $name) {
       _id
       name
+      owner
     }
   }
 `;
@@ -55,7 +61,7 @@ export const NEW_TASK_MUTATION = gql`
 
 export const UPDATE_TASK_MUTATION = gql`
   mutation updateTask($id: ID!, $name: String, $done: Boolean) {
-    updateTask(payload:{_id: $id, name: $name, done: $done}) {
+    updateTask(payload: { _id: $id, name: $name, done: $done }) {
       _id
       name
       done

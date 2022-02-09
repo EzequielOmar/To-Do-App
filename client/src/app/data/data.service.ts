@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { findDangerousChanges } from 'graphql';
+import { SessionService } from '../session/session.service';
 import {
   DELETE_FOLDER_MUTATION,
   DELETE_TASK_MUTATION,
@@ -15,12 +17,14 @@ import {
   providedIn: 'root',
 })
 export class DataService {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private session: SessionService) {}
 
   getData() {
-    return this.apollo.watchQuery({
-      query: GET_ALL_DATA_QUERY,
-    });
+    return this.apollo
+      .watchQuery({
+        query: GET_ALL_DATA_QUERY,
+      })
+      .refetch();
   }
 
   addFolder(folderName: string) {

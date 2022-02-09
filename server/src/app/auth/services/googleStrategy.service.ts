@@ -15,6 +15,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:8080/google/redirect',
+      //response_type: 'code',
       passReqToCallback: true,
       scope: ['profile'],
     });
@@ -43,7 +44,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       const user = {
         jwt,
       };
-      console.log(jwt);
       done(null, user);
     } catch (err) {
       done(err, false);

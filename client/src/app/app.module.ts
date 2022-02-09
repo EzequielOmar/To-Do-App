@@ -8,9 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GraphQLModule } from './graphql.module';
+import { MainComponent } from './main/main.component';
+import { LoginComponent } from './login/login.component';
+import { DataService } from './data/data.service';
+import { SessionService } from './session/session.service';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MainComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -19,7 +23,7 @@ import { GraphQLModule } from './graphql.module';
     NgbModule,
     GraphQLModule,
   ],
-  providers: [],
+  providers: [DataService, SessionService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
