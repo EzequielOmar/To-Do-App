@@ -39,7 +39,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       const jwt: string = await this.authService.codeJwt(
         profile.id,
         Provider.GOOGLE,
-        profile.displayName,
       );
       const user = {
         jwt,

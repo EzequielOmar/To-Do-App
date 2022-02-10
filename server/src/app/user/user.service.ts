@@ -35,7 +35,7 @@ export class UserService {
     return this.UserModel.deleteOne({ name: gid });
   }
 
-  private async exists(gid: string): Promise<User | null> {
+  async exists(gid: string): Promise<User | null> {
     return await this.UserModel.findOne({ name: gid }).exec();
   }
 }

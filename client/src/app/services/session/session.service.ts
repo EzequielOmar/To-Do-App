@@ -7,6 +7,13 @@ import { Router } from '@angular/router';
 export class SessionService {
   constructor(private router: Router) {}
 
+  /**
+   * Log the user in, Remove token variable from url, and return true
+   * Or return false if no token was sended
+   * @param token token variable from url
+   * token -> (sended from the server to root website by get param as `token`
+   * @returns boolean
+   */
   logIn(token: string | null): boolean {
     if (token) {
       window.history.pushState('', '', '/');
@@ -20,6 +27,10 @@ export class SessionService {
     return sessionStorage.getItem('token') ? true : false;
   }
 
+  /**
+   * remove token variable from sessionStorage
+   * and add expired variable to true (in order to show error message in login page)
+   */
   forceLogOut() {
     sessionStorage.setItem('token', '');
     sessionStorage.setItem('expired', 'true');

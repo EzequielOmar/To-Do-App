@@ -8,13 +8,15 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GraphQLModule } from './graphql.module';
-import { MainComponent } from './main/main.component';
-import { LoginComponent } from './login/login.component';
-import { DataService } from './data/data.service';
-import { SessionService } from './session/session.service';
+import { MainComponent } from './pages/main/main.component';
+import { LoginComponent } from './pages/login/login.component';
+import { DataService } from './services/data/data.service';
+import { SessionService } from './services/session/session.service';
+import { FolderListComponent } from './components/folder-list/folder-list.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LoginComponent],
+  declarations: [AppComponent, MainComponent, LoginComponent, FolderListComponent, TaskListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

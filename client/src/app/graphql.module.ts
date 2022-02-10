@@ -10,12 +10,14 @@ import { setContext } from '@apollo/client/link/context';
 
 const uri = 'http://localhost:8080/graphql';
 
+//Middleware to prepare graphql `request`
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const basic = setContext((operation, context) => ({
     headers: {
       Accept: 'charset=utf-8',
     },
   }));
+  //Get the session token from sessionStorage and add it to header authorization (if null return empty object)
   const auth = setContext((operation, context) => {
     const token = sessionStorage.getItem('token');
     if (token === null) {

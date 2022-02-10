@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService } from '../session/session.service';
+import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +8,6 @@ import { SessionService } from '../session/session.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  //muestra el error de token expirado
   error: boolean = false;
 
   constructor(private session: SessionService, private router: Router) {
@@ -26,6 +25,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  /**
+   * Show session expired error
+   */
   private showErrorTokenExpired() {
     this.error = true;
     setTimeout(() => {
