@@ -1,12 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 $primary: #dbdbdb;
-$secondary: rgb(143, 209, 143);
+$secondary: #0066ff;
 $third: rgb(238, 238, 238);
+$danger: #ff0000;
 
 $theme-colors: (
   "primary": $primary,
   "secondary": $secondary,
   "third": $third,
+  "danger": $danger,
 );
 
 /* Importing Bootstrap SCSS file. */

@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../data/data.service';
 import { SessionService } from '../session/session.service';
@@ -11,17 +18,19 @@ import { SessionService } from '../session/session.service';
 export class MainComponent implements OnInit {
   userData?: any;
   //folders
-  folders?: any[];
-  selectedFid?: string;
-  openFolder: boolean = false;
-  editFolder: boolean = false;
+  //folders?: any[];
+  //selectedFid?: string;
+  //openFolder: boolean = false;
   //tasks
-  selectedTid?: string;
-  editTask: boolean = false;
+  //selectedTid?: string;
   //ui
   spinner: boolean = false;
-  error: string = '';
-  errorMessage: string = 'Lo sentimos. Error en la aplicación.';
+
+  readonly: boolean = true;
+  selectedFolder: any;
+
+  @ViewChild('#modifTaskInput') modifTaskInput?: ElementRef;
+  @ViewChild('modifFolderInput') modifFolderInput?: ElementRef<Input>;
 
   constructor(
     private ds: DataService,
@@ -35,19 +44,24 @@ export class MainComponent implements OnInit {
     this.getData();
   }
 
-  selectFolder(fid: string) {
-    this.selectedFid === fid
-      ? (this.selectedFid = undefined)
-      : (this.selectedFid = fid);
-    this.selectedFid ? (this.openFolder = true) : (this.openFolder = false);
+  @HostListener('click', ['$event'])
+  click(e: any) {
+    if (this.modifFolderInput?.nativeElement !== e.target) this.readonly = true;
   }
 
-  selectTask(tid: string) {
-    this.selectedTid === tid
-      ? (this.selectedTid = undefined)
-      : (this.selectedTid = tid);
+  selectFolder(folder: any) {
+    this.selectedFolder === folder
+      ? (this.selectedFolder = undefined)
+      : (this.selectedFolder = folder);
   }
 
+  //selectTask(tid: string) {
+  //  this.selectedTid === tid
+  //    ? (this.selectedTid = undefined)
+  //    : (this.selectedTid = tid);
+  //}
+
+  //service calls
   async addFolder(input: HTMLInputElement) {
     if (input.value) {
       this.ds.addFolder(input.value).subscribe(
@@ -73,7 +87,7 @@ export class MainComponent implements OnInit {
         }
       );
     }
-    this.editFolder = false;
+    this.readonly = true;
   }
 
   async deleteFolder(fid: string) {
@@ -88,8 +102,8 @@ export class MainComponent implements OnInit {
   }
 
   async addTask(input: HTMLInputElement) {
-    if (this.selectedFid && input.value) {
-      this.ds.addTask(input.value, this.selectedFid).subscribe(
+    if (this.selectedFolder && input.value) {
+      this.ds.addTask(input.value, this.selectedFolder._id).subscribe(
         (res: any) => {
           this.getData();
         },
@@ -110,11 +124,11 @@ export class MainComponent implements OnInit {
         this.redirectToError();
       }
     );
-    this.editTask = false;
+    this.readonly = true;
   }
 
   async deleteTask(tid: string) {
-    if (this.selectedFid && tid) {
+    if (this.selectedFolder && tid) {
       this.ds.deleteTask(tid).subscribe(
         (res: any) => {
           this.getData();
@@ -134,7 +148,6 @@ export class MainComponent implements OnInit {
         .then((res: any) => {
           this.userData = {};
           this.userData = res.data.User;
-          console.log(this.userData);
         })
         .finally(() => {
           this.spinner = false;
