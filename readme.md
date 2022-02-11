@@ -1,4 +1,4 @@
-# To Do App - Branch NestJs
+# To Do App v.2
 #### _Node + Angular + MongoDb + NestJs + Graphql_
 In this branch, change to NestJs for the server _(which internally use node and express)_, and modify the Rest Api format for a graphql one. This allows us to bring all the data in one query.
 
