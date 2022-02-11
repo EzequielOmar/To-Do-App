@@ -15,7 +15,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:8080/google/redirect',
-      //response_type: 'code',
       passReqToCallback: true,
       scope: ['profile'],
     });
@@ -34,8 +33,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     done: VerifyCallback,
   ) {
     try {
-      const u = await this.us.getOrCreateUser(profile.id);
-      if (!u) throw new Error('Error al crear/obtener el usuario');
+      const userExists = await this.us.getOrCreateUser(
+        profile.id,
+        profile.displayName,
+      );
+      if (!userExists) throw new Error('Error al crear/obtener el usuario');
       const jwt: string = await this.authService.codeJwt(
         profile.id,
         Provider.GOOGLE,

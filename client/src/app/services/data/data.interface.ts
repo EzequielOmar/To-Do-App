@@ -20,6 +20,25 @@ export const GET_ALL_DATA_QUERY = gql`
   }
 `;
 
+export const UPDATE_USER_NAME = gql`
+  mutation updateUserName($name: String!) {
+    updateUserName(name: $name) {
+      _id
+      name
+      provId
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation deleteUser {
+    deleteUser {
+      _id
+      name
+    }
+  }
+`;
+
 export const NEW_FOLDER_MUTATION = gql`
   mutation createFolder($name: String!) {
     createFolder(name: $name) {

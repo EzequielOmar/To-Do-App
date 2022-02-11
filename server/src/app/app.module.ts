@@ -10,8 +10,7 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      //`mongodb+srv://todo-api:${process.env.db_pass}@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
-      `mongodb+srv://todo-api:todo-api@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
+      `mongodb+srv://todo-api:${process.env.db_pass}@cluster0.3mcnq.mongodb.net/todo-app?retryWrites=true&w=majority`,
     ),
     UserModule,
     FolderModule,

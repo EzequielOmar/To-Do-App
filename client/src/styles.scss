@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-$primary: #dbdbdb;
+$primary: #c3c3c3;
 $secondary: #0066ff;
-$third: rgb(238, 238, 238);
+$third: #ededed;
 $danger: #ff0000;
 
 $theme-colors: (
@@ -10,6 +10,18 @@ $theme-colors: (
   "third": $third,
   "danger": $danger,
 );
+
+.pointer {
+  cursor: pointer;
+}
+
+.input-bar {
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="45"><text x="7" y="21" style="font: 22px Arial">/</text></svg>')
+    no-repeat;
+  padding-left: 1rem !important;
+  padding: 1rem 0;
+  height: 1.4rem;
+}
 
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";

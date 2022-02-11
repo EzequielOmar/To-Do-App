@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { UpdateFolderInput } from 'src/graphql';
+import { TaskService } from '../task/task.service';
 
 import { Folder, FolderDocument } from './folder.model';
 
@@ -9,6 +10,7 @@ import { Folder, FolderDocument } from './folder.model';
 export class FolderService {
   constructor(
     @InjectModel(Folder.name) private folderModel: Model<FolderDocument>,
+    private ts: TaskService,
   ) {}
 
   create(name: string, owner: string) {
@@ -16,8 +18,8 @@ export class FolderService {
     return newFolder.save();
   }
 
-  list(owner: string) {
-    return this.folderModel.find({ owner: owner }).exec();
+  list(provId: string) {
+    return this.folderModel.find({ owner: provId }).exec();
   }
 
   update(payload: UpdateFolderInput) {
@@ -26,11 +28,18 @@ export class FolderService {
       .exec();
   }
 
-  delete(_id: MongooseSchema.Types.ObjectId) {
-    return this.folderModel.findByIdAndRemove(_id);
+  async deleteOne(_id: MongooseSchema.Types.ObjectId) {
+    return await this.ts
+      .deleteByFolderId(_id)
+      .then(() => this.folderModel.findByIdAndRemove(_id));
   }
 
-  deleteByUserId(uid: string) {
-    return this.folderModel.deleteMany({ owner: uid });
+  async deleteByUserId(uid: string) {
+    //get all the user folders
+    const userFolders = await this.list(uid);
+    //put all the delete folder promises in une array
+    const deleteFoldersPromises = userFolders.map((f) => this.deleteOne(f._id));
+    //return the array of promises in execution
+    return await Promise.all(deleteFoldersPromises);
   }
 }

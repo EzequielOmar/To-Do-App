@@ -6,6 +6,9 @@ export class User {
   _id!: MongooseSchema.Types.ObjectId;
 
   @Prop()
+  provId!: string;
+
+  @Prop()
   name!: string;
 }
 

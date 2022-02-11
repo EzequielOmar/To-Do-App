@@ -44,6 +44,8 @@ export abstract class IMutation {
     abstract updateTask(payload: UpdateTaskInput): Task | Promise<Task>;
 
     abstract deleteUser(): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUserName(name: string): User | Promise<User>;
 }
 
 export abstract class IQuery {
@@ -64,6 +66,7 @@ export class Task {
 export class User {
     _id: string;
     name: string;
+    provId: string;
     ufolders: Nullable<Folder>[];
 }
 

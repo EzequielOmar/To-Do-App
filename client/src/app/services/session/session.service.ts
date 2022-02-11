@@ -27,12 +27,16 @@ export class SessionService {
     return sessionStorage.getItem('token') ? true : false;
   }
 
+  logOut() {
+    sessionStorage.setItem('token', '');
+  }
+
   /**
    * remove token variable from sessionStorage
    * and add expired variable to true (in order to show error message in login page)
    */
   forceLogOut() {
-    sessionStorage.setItem('token', '');
+    this.logOut();
     sessionStorage.setItem('expired', 'true');
   }
 }

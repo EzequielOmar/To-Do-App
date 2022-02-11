@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
@@ -13,8 +22,14 @@ export class FolderListComponent {
   @Output() folderSelect: EventEmitter<string> = new EventEmitter();
   @Output() refreshData: EventEmitter<any> = new EventEmitter();
   @Output() authError: EventEmitter<any> = new EventEmitter();
+  @Output() readonlyFalse: EventEmitter<any> = new EventEmitter();
+  @ViewChild('modifFolderInput') modifFolderInput?: ElementRef<Input>;
 
   constructor(private ds: DataService) {}
+
+  updateNames() {
+    this.readonlyFalse.emit();
+  }
 
   selectFolder(folder: any) {
     this.selectedFolder === folder
@@ -24,7 +39,7 @@ export class FolderListComponent {
   }
 
   //service calls
-  async addFolder(input: HTMLInputElement) {
+  addFolder(input: HTMLInputElement) {
     if (input.value) {
       this.ds.addFolder(input.value).subscribe(
         (res: any) => {
@@ -38,7 +53,7 @@ export class FolderListComponent {
     }
   }
 
-  async modifFolder(folder: any, newFname: string) {
+  modifFolder(folder: any, newFname: string) {
     if (newFname && folder.folder !== newFname) {
       this.ds.updateFolder(folder._id, newFname).subscribe(
         (res: any) => {
@@ -49,10 +64,9 @@ export class FolderListComponent {
         }
       );
     }
-    this.readonly = true;
   }
 
-  async deleteFolder(fid: string) {
+  deleteFolder(fid: string) {
     this.ds.deleteFolder(fid).subscribe(
       (res: any) => {
         this.refreshData.emit();

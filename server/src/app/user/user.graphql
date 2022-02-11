@@ -1,11 +1,13 @@
 type User {
   _id: ID!
   name: String!
+  provId: String!
   ufolders: [Folder]!
 }
 
 type Mutation {
   deleteUser: User
+  updateUserName(name: String!): User!
 }
 
 type Query {

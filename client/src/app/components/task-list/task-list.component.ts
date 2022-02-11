@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
@@ -12,11 +20,17 @@ export class TaskListComponent {
   @Output() folderSelect: EventEmitter<any> = new EventEmitter();
   @Output() refreshData: EventEmitter<any> = new EventEmitter();
   @Output() authError: EventEmitter<any> = new EventEmitter();
+  @Output() readonlyFalse: EventEmitter<any> = new EventEmitter();
+  @ViewChildren('modifTaskInput') modifTaskInput?: ElementRef<Input>;
 
   constructor(private ds: DataService) {}
 
+  updateNames() {
+    this.readonlyFalse.emit();
+  }
+
   //service calls
-  async addTask(input: HTMLInputElement) {
+  addTask(input: HTMLInputElement) {
     if (this.folder && input.value) {
       this.ds.addTask(input.value, this.folder._id).subscribe(
         (res: any) => {
@@ -30,7 +44,7 @@ export class TaskListComponent {
     }
   }
 
-  async modifTask(task: any, newTname: string, done: boolean) {
+  modifTask(task: any, newTname: string, done: boolean) {
     this.ds.updateTask(task._id, newTname, done).subscribe(
       (res: any) => {
         this.refreshData.emit();
@@ -39,10 +53,9 @@ export class TaskListComponent {
         this.authError.emit();
       }
     );
-    this.readonly = true;
   }
 
-  async deleteTask(tid: string) {
+  deleteTask(tid: string) {
     if (this.folder && tid) {
       this.ds.deleteTask(tid).subscribe(
         (res: any) => {

@@ -1,30 +1,26 @@
 <!--FOLDERS-->
-<!-- folder tittle-->
-<div class="row bg-secondary">
-  <h4>Folders</h4>
-</div>
 <!-- folder row -->
 <ul class="p-0 m-0 list-group">
-  <li *ngFor="let f of folders"
-    class="bg-third rounded row d-flex align-items-center text-capitalize mt-2 mx-1">
+  <li *ngFor="let f of folders" class="bg-third rounded row d-flex align-items-center text-capitalize mt-2 mx-1">
     <div class="d-flex align-items-center justify-content-between">
       <!--Folder icon open/closed-->
       <div (click)="selectFolder(f)">
         <i *ngIf="selectedFolder && f._id===selectedFolder._id; else fClosed" placement="top" ngbTooltip="Close Folder"
-          class="bi bi-folder2-open w-auto fs-1 px-2 text-secondary"></i>
+          class="bi bi-folder2-open w-auto fs-1 px-2 pointer"></i>
         <ng-template #fClosed>
-          <i placement="top" ngbTooltip="Open Folder" class="bi bi-folder w-auto fs-1 px-2"></i>
+          <i placement="top" ngbTooltip="Open Folder" class="bi bi-folder w-auto fs-1 px-2 text-primary pointer"></i>
         </ng-template>
       </div>
       <!--Folder Name / Input-->
-      <input [readonly]="readonly" (dblclick)="readonly=false" (change)="modifFolder(f,modifFolderInput.value)"
-        #modifFolderInput type="text" class="bg-third border-0 px-2 py-1 h-75 w-100" value="/{{f.name}}"
-        aria-label="folder add input" aria-describedby="button-addon1">
+      <input [readonly]="readonly" (dblclick)="updateNames()" (change)="modifFolder(f,modifFolderInput.value)"
+        #modifFolderInput placement="top" ngbTooltip="Double click to modify" type="text"
+        class="bg-third border-0 py-1 w-100 input-bar" value="{{f.name}}" aria-label="folder add input"
+        aria-describedby="button-addon1">
       <!--Butttons-->
       <div class="w-auto d-flex align-items-center">
         <span class="badge bg-primary w-auto mx-2" placement="top" ngbTooltip="Tasks Count">{{f.ftasks.length}}</span>
         <span class="w-auto">
-          <i (click)="deleteFolder(f._id)" class="bi bi-trash w-auto fs-5" placement="top"
+          <i (click)="deleteFolder(f._id)" class="bi bi-trash w-auto fs-5 pointer" placement="top"
             ngbTooltip="Delete Folder"></i>
         </span>
       </div>

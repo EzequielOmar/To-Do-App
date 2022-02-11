@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import {
+  Args,
   Mutation,
   Parent,
   Query,
@@ -23,15 +24,21 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
+  async updateUserName(
+    @CurrentUser() user: any,
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.us.update(user.thirdPartyId, name);
+  }
+
+  @Mutation(() => User)
   async deleteUser(@CurrentUser() user: any) {
-    await this.fs.deleteByUserId(user.thirdPartyId).then(() => {
-      return this.us.delete(user.thirdPartyId);
-    });
+    await this.us.delete(user.thirdPartyId).then((r) => r);
   }
 
   @ResolveField('ufolders', () => [Folder])
   async ufolders(@Parent() User: User) {
-    const { name } = User;
-    return this.fs.list(name);
+    const { provId } = User;
+    return this.fs.list(provId);
   }
 }

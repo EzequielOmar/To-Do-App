@@ -35,7 +35,7 @@ export class FolderResolver {
   async deleteFolder(
     @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
   ) {
-    return await this.ts.deleteByFolderId(_id).then(() => this.fs.delete(_id));
+    return this.fs.deleteOne(_id);
   }
 
   @ResolveField('ftasks', () => [Task])

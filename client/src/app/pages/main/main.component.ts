@@ -1,5 +1,6 @@
 import {
   Component,
+  ContentChild,
   ElementRef,
   HostListener,
   Input,
@@ -7,6 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { FolderListComponent } from 'src/app/components/folder-list/folder-list.component';
+import { TaskListComponent } from 'src/app/components/task-list/task-list.component';
 import { DataService } from '../../services/data/data.service';
 import { SessionService } from '../../services/session/session.service';
 
@@ -20,8 +23,9 @@ export class MainComponent implements OnInit {
   spinner: boolean = false;
   selectedFid?: string;
   readonly: boolean = true;
-  @ViewChild('#modifTaskInput') modifTaskInput?: ElementRef;
-  @ViewChild('modifFolderInput') modifFolderInput?: ElementRef<Input>;
+  @ViewChild('folderList') folderList?: FolderListComponent;
+  @ViewChild('taskList') taskList?: TaskListComponent;
+  @ViewChild('modifUserName') modifUserName?: ElementRef<Input>;
 
   constructor(
     private ds: DataService,
@@ -35,9 +39,24 @@ export class MainComponent implements OnInit {
     this.getData();
   }
 
+  /**
+   * Listen to click event in all the main component
+   * Check if the click is not on the modifFolderInput and modifTaskInput (input of folder and tasks name)
+   * If the user click outside the name inputs the input get readonly.
+   * @param e evento click
+   */
   @HostListener('click', ['$event'])
   click(e: any) {
-    if (this.modifFolderInput?.nativeElement !== e.target) this.readonly = true;
+    if (
+      this.folderList?.modifFolderInput?.nativeElement !== e.target &&
+      this.taskList?.modifTaskInput?.nativeElement !== e.target &&
+      this.modifUserName?.nativeElement !== e.target
+    )
+      this.readonly = true;
+  }
+
+  updateNames() {
+    this.readonly = false;
   }
 
   /**
@@ -51,6 +70,50 @@ export class MainComponent implements OnInit {
       : '';
   }
 
+  //service call
+  async getData() {
+    this.spinner = true;
+    try {
+      await this.ds
+        .getAllUserData()
+        .then((res: any) => {
+          this.userData = {};
+          this.userData = res.data.User;
+        })
+        .finally(() => {
+          this.spinner = false;
+          this.readonly = true;
+        });
+    } catch (err) {
+      this.redirectToError();
+    }
+  }
+
+  updateUserName(name: string) {
+    this.ds.updateUserName(name).subscribe(
+      (res: any) => {
+        this.getData();
+      },
+      (err) => {
+        this.redirectToError();
+      }
+    );
+  }
+
+  deleteUser() {
+    this.ds
+      .deleteUser()
+      .toPromise()
+      .finally(() => {
+        this.logOut();
+      });
+  }
+
+  logOut() {
+    this.session.logOut();
+    this.router.navigate(['login']);
+  }
+
   /**
    * Close the current session (unset sessionStoragge vars)
    * And refirect to login, showing the token expired error message
@@ -58,24 +121,6 @@ export class MainComponent implements OnInit {
   redirectToError() {
     this.session.forceLogOut();
     this.router.navigate(['login']);
-  }
-
-  //service call
-  async getData() {
-    this.spinner = true;
-    try {
-      await this.ds
-        .getData()
-        .then((res: any) => {
-          this.userData = {};
-          this.userData = res.data.User;
-        })
-        .finally(() => {
-          this.spinner = false;
-        });
-    } catch (err) {
-      this.redirectToError();
-    }
   }
 
   /**

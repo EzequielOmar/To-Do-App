@@ -6,11 +6,13 @@ import { SessionService } from '../session/session.service';
 import {
   DELETE_FOLDER_MUTATION,
   DELETE_TASK_MUTATION,
+  DELETE_USER,
   GET_ALL_DATA_QUERY,
   NEW_FOLDER_MUTATION,
   NEW_TASK_MUTATION,
   UPDATE_FOLDER_MUTATION,
   UPDATE_TASK_MUTATION,
+  UPDATE_USER_NAME,
 } from './data.interface';
 
 @Injectable({
@@ -19,12 +21,25 @@ import {
 export class DataService {
   constructor(private apollo: Apollo, private session: SessionService) {}
 
-  getData() {
+  getAllUserData() {
     return this.apollo
       .watchQuery({
         query: GET_ALL_DATA_QUERY,
       })
       .refetch();
+  }
+
+  updateUserName(name: string) {
+    return this.apollo.mutate({
+      mutation: UPDATE_USER_NAME,
+      variables: { name: name },
+    });
+  }
+
+  deleteUser() {
+    return this.apollo.mutate({
+      mutation: DELETE_USER,
+    });
   }
 
   addFolder(folderName: string) {
