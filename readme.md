@@ -1,14 +1,13 @@
-# To Do App
-## _Node + Angular + MongoDb_
+# To Do App v.1
+#### _Node + Angular + MongoDb_
+For the first version, we got a classical NodeJs Rest Api with a connection to a database capable of storing two entities: Folders, and Tasks. They have a relationship One to Many.
+The client was built with AngulaJs, making Http requests to the api.
 
-Tanto el cliente como el servidor estan hosteados en Heroku.
-Para la base de datos se utilizó MongoDB.
-(un cluster gratuito en -> https://cloud.mongodb.com/)
+
+### Database (Mongodb)
+Use Mongoose to connect to a MongoDB free cluster from this website -> https://cloud.monb.com/cluster
 
 ### Servidor (api)
-##### https://eov-todo-api.herokuapp.com/
-
-
 Endpoints ->
 - GET -> "/"
     (all folders)
@@ -28,9 +27,7 @@ Endpoints ->
     (change task name or state) -> (receive task on body)
 
 ### Client
-##### https://eov-todo-client.herokuapp.com/
-
-Para el cliente se utilizó bootstrap5, bootstrap-icons y ng-bootstrap (éste último sólo para agregar tooltips).
+For the client, use bootstrap5, bootstrap-icons y ng-bootstrap (this last-one only for putting some tooltips).
 
 ## Installation
 #### Server - Dev environment (nodemon)
@@ -41,9 +38,8 @@ npm i
 node run dev
 ```
 #### Client - Dev environment
-Es necesario cambiar la url de la api, a la URL del servidor de desarrollo.
--- De otra forma los datos vienen de la api en producción --
-Esta variable se encuentra guardada en app/services/task.service.ts en una constante llamada - baseUrl .
+It is necessary to change the url of the api to the URL of the development server, otherwise the data come from api in production and changes in production won't take effect.
+This variable is stored in app/services/task.service.ts.
 ```sh
 cd client
 npm i
