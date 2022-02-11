@@ -1,17 +1,19 @@
 # To Do App - Branch NestJs
-## _Node + Angular + MongoDb_  * + NestJs + Graphql
+#### _Node + Angular + MongoDb + NestJs + Graphql_
+In this branch, change to NestJs for the server _(which internally use node and express)_, and modify the Rest Api format for a graphql one. This allows us to bring all the data in one query.
 
-En esta rama, se modificó el servidor, que previamente había sido realizado en formato Rest Api con node Js, el nuevo servidor fue realizado con nestJs, en formato de api graphql, a modo de realizar menos consultas y mas veloces para traer la información.
+### Database (Mongo)
+Use mongoose for the database conecction, and we take 
+A free cluster of a MongoDB database was used for the storage.
+- Of this website -> https://cloud.mongodb.com/ 
 
-Tanto el cliente como el servidor estan hosteados en Heroku.
-Para la base de datos se utilizó MongoDB.
-(un cluster gratuito en -> https://cloud.mongodb.com/)
+### GraphQl 
+In order to make the change from Rest Api to graphql, we need to inject graphql module in app.module, and set some compile configurations.
+I took the **schema first aproach**, so that means that the app will have to to compile all the model schemas into a typescrypt file.
+_(All the .graphql format files inside each entity folder, will compile into the graphql.ts in the root of the app)_ 
 
 ### Servidor (SCHEMAS - graphql api)
-##### https://eov-todo-api.herokuapp.com/
-
 ##### Folders:
-
 type Folder {
   _id: ID!
   name: String!
@@ -43,7 +45,6 @@ type Mutation {
 }
 
 ##### Tasks:
-
 type Task {
   _id: ID!
   name: String!
@@ -80,9 +81,10 @@ type Mutation {
 }
 
 ### Client
-##### https://eov-todo-client.herokuapp.com/
+For the client, use bootstrap5, bootstrap-icons y ng-bootstrap (this last-one only for putting some tooltips).
 
-Para el cliente se utilizó bootstrap5, bootstrap-icons y ng-bootstrap (éste último sólo para agregar tooltips).
+In order to make the request to a graphql server, import the graphql.module into app.module, this module uses apollo and the api url to create the correct context for the request.
+Also have to write the preset request in services/data/data.interface.ts and execute them in the services/data/data.service.ts.
 
 ## Installation
 #### Server - Dev environment (nodemon)
@@ -90,12 +92,11 @@ Para el cliente se utilizó bootstrap5, bootstrap-icons y ng-bootstrap (éste ú
 ```sh
 cd server
 npm i
-nest start --watch 
+npm run start:dev 
 ```
 #### Client - Dev environment
-Es necesario cambiar la url de la api, a la URL del servidor de desarrollo.
--- De otra forma los datos vienen de la api en producción --
-Esta variable se encuentra guardada en app/services/task.service.ts en una constante llamada - baseUrl .
+It is necessary to change the url of the api to the URL of the development server, otherwise the data come from api in production and changes in production won't take effect. This variable is stored in app/services/task.service.ts.
+
 ```sh
 cd client
 npm i
