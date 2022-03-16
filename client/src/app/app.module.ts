@@ -14,9 +14,20 @@ import { DataService } from './services/data/data.service';
 import { SessionService } from './services/session/session.service';
 import { FolderListComponent } from './components/folder-list/folder-list.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
+import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
+} from 'angularx-social-login';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LoginComponent, FolderListComponent, TaskListComponent],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    LoginComponent,
+    FolderListComponent,
+    TaskListComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,8 +35,26 @@ import { TaskListComponent } from './components/task-list/task-list.component';
     FormsModule,
     NgbModule,
     GraphQLModule,
+    SocialLoginModule,
   ],
-  providers: [DataService, SessionService],
+  providers: [
+    DataService,
+    SessionService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: true, //keeps the user signed in
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '274596514343-6058q2o45pomkc5vt53ipfn07ark2vj7.apps.googleusercontent.com'
+            ), // your client id
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

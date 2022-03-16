@@ -27,12 +27,8 @@ export class MainComponent implements OnInit {
   @ViewChild('taskList') taskList?: TaskListComponent;
   @ViewChild('modifUserName') modifUserName?: ElementRef<Input>;
 
-  constructor(
-    private ds: DataService,
-    private session: SessionService,
-    private router: Router
-  ) {
-    this.logOrRedirectToLogin();
+  constructor(private ds: DataService, private router: Router) {
+  //  this.logOrRedirectToLogin();
   }
 
   ngOnInit(): void {
@@ -73,14 +69,17 @@ export class MainComponent implements OnInit {
   //service call
   async getData() {
     this.spinner = true;
+    console.log('getData');
     try {
       await this.ds
         .getAllUserData()
         .then((res: any) => {
+          console.log('getData then');
           this.userData = {};
           this.userData = res.data.User;
         })
         .finally(() => {
+          console.log('getData final');
           this.spinner = false;
           this.readonly = true;
         });
@@ -110,7 +109,7 @@ export class MainComponent implements OnInit {
   }
 
   logOut() {
-    this.session.logOut();
+    SessionService.logOut();
     this.router.navigate(['login']);
   }
 
@@ -119,7 +118,7 @@ export class MainComponent implements OnInit {
    * And refirect to login, showing the token expired error message
    */
   redirectToError() {
-    this.session.forceLogOut();
+    SessionService.forceLogOut();
     this.router.navigate(['login']);
   }
 
@@ -129,12 +128,6 @@ export class MainComponent implements OnInit {
    * if bolth fail, redirect to login
    */
   private logOrRedirectToLogin() {
-    if (
-      !this.session.logged() &&
-      !this.session.logIn(
-        new URL(document.location.href).searchParams.get('token')
-      )
-    )
-      this.router.navigate(['login']);
+    if (!SessionService.logged()) this.router.navigate(['login']);
   }
 }
