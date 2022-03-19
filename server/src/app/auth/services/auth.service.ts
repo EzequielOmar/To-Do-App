@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { sign } from 'jsonwebtoken';
+import { decode, sign } from 'jsonwebtoken';
 import 'dotenv/config';
 import * as bcrypt from 'bcrypt';
 
@@ -16,12 +16,36 @@ export class AuthService {
     accessToken: string;
     reloadToken: string;
   }> {
+    return this.createTokens(provId);
+  }
+
+  async reloadUserTokens(
+    reloadToken: string,
+    prov_id: string,
+  ): Promise<{
+    accessToken: string;
+    reloadToken: string;
+  }> {
+    const decodedToken = decode(reloadToken);
+    //compare cookie prov_id value, with hashed prov_id on reloadToken
+    const matches = (
+      await bcrypt.compare(prov_id, decodedToken['hashed_id'])
+    ).valueOf();
+    //if matches return new tokens, else return empty strings
+    if (matches) return this.createTokens(prov_id);
+    return { accessToken: '', reloadToken: '' };
+  }
+
+  private async createTokens(prov_id: string): Promise<{
+    accessToken: string;
+    reloadToken: string;
+  }> {
     try {
       //create accessToken with no data, only expires date
       const accessToken: string = sign({}, this.JWT_SECRET_KEY, {
-        expiresIn: 360,
+        expiresIn: 10,
       });
-      const hashed_id = await bcrypt.hash(provId, this.salts);
+      const hashed_id = await bcrypt.hash(prov_id, this.salts);
       const reloadToken: string = sign(
         { hashed_id: hashed_id },
         this.JWT_SECRET_KEY,

@@ -42,12 +42,8 @@ export class FolderListComponent {
   addFolder(input: HTMLInputElement) {
     if (input.value) {
       this.ds.addFolder(input.value).subscribe(
-        (res: any) => {
-          this.refreshData.emit();
-        },
-        (err) => {
-          this.authError.emit();
-        }
+        (res: any) => this.refreshData.emit(),
+        (err) => this.authError.emit()
       );
       input.value = '';
     }
@@ -56,24 +52,16 @@ export class FolderListComponent {
   modifFolder(folder: any, newFname: string) {
     if (newFname && folder.folder !== newFname) {
       this.ds.updateFolder(folder._id, newFname).subscribe(
-        (res: any) => {
-          this.refreshData.emit();
-        },
-        (err) => {
-          this.authError.emit();
-        }
+        (res: any) => this.refreshData.emit(),
+        (err) => this.authError.emit()
       );
     }
   }
 
   deleteFolder(fid: string) {
     this.ds.deleteFolder(fid).subscribe(
-      (res: any) => {
-        this.refreshData.emit();
-      },
-      (err) => {
-        this.authError.emit();
-      }
+      (res: any) => this.refreshData.emit(),
+      (err) => this.authError.emit()
     );
   }
 }

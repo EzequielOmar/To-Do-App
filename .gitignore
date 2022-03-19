@@ -1,10 +1,19 @@
-#backend
+#BACKEND
+
+# modules
 server/node-modules
+
+# compiled output
 server/dist
+
+#variables
 server/.env
 
+#CLIENT
 
-#client
+#variables
+client/src/environments
+
 # compiled output
 client/dist
 client/tmp

@@ -20,6 +20,7 @@ import {
 } from 'angularx-social-login';
 import { redirectUnauthenticatedGuardService } from './guards/redirectUnauthenticated';
 import { AuthService } from './services/auth/auth.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -49,9 +50,7 @@ import { AuthService } from './services/auth/auth.service';
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '274596514343-6058q2o45pomkc5vt53ipfn07ark2vj7.apps.googleusercontent.com'
-            ), // your client id
+            provider: new GoogleLoginProvider(environment.google_client_id),
           },
         ],
       } as SocialAuthServiceConfig,

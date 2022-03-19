@@ -10,7 +10,8 @@ export class AuthController {
   @Post('redirect')
   async googleLoginCallback(@Req() req, @Res() res: Response) {
     //if no body id, return error
-    if (!req.body.id) res.status(HttpStatus.FORBIDDEN).send('No id provided');
+    if (!req.body.id)
+      return res.status(HttpStatus.FORBIDDEN).send('No id provided');
     //get or create user
     let userExists = await this.us.exists(req.body.id);
     if (userExists) res.status(HttpStatus.ACCEPTED);
@@ -25,11 +26,26 @@ export class AuthController {
     res.cookie('prov_id', userExists.provId, {
       secure: true,
       httpOnly: true,
-      sameSite: 'none',
+      domain: process.env.CLIENT_HOST,
       //* expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
       expires: new Date(Date.now() + 3600 * 1000 * 24 * 1 * 1),
     });
     //return accessToken and reloadToken in body
     return res.send(await this.auth.createUserTokens(userExists.provId));
+  }
+
+  @Post('reloadTokens')
+  async reloadTokens(@Req() req, @Res() res: Response) {
+    //if no body reloadToken, return error
+    if (!req.body.reloadToken)
+      return res.status(HttpStatus.FORBIDDEN).send('No reload token provided');
+    return res
+      .status(HttpStatus.ACCEPTED)
+      .send(
+        await this.auth.reloadUserTokens(
+          req.body.reloadToken,
+          req.cookies['prov_id'],
+        ),
+      );
   }
 }

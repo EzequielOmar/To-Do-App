@@ -7,8 +7,9 @@ import {
 } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
+import { environment } from 'src/environments/environment';
 
-const uri = 'http://localhost:8080/graphql'; //'https://eov-todo-api.herokuapp.com/graphql';
+const uri = environment.server_host + '/graphql';
 
 //Middleware to prepare graphql `request`
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {

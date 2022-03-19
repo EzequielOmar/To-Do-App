@@ -33,12 +33,8 @@ export class TaskListComponent {
   addTask(input: HTMLInputElement) {
     if (this.folder && input.value) {
       this.ds.addTask(input.value, this.folder._id).subscribe(
-        (res: any) => {
-          this.refreshData.emit();
-        },
-        (err) => {
-          this.authError.emit();
-        }
+        (res: any) => this.refreshData.emit(),
+        (err) => this.authError.emit()
       );
       input.value = '';
     }
@@ -46,24 +42,16 @@ export class TaskListComponent {
 
   modifTask(task: any, newTname: string, done: boolean) {
     this.ds.updateTask(task._id, newTname, done).subscribe(
-      (res: any) => {
-        this.refreshData.emit();
-      },
-      (err) => {
-        this.authError.emit();
-      }
+      (res: any) => this.refreshData.emit(),
+      (err) => this.authError.emit()
     );
   }
 
   deleteTask(tid: string) {
     if (this.folder && tid) {
       this.ds.deleteTask(tid).subscribe(
-        (res: any) => {
-          this.refreshData.emit();
-        },
-        (err) => {
-          this.authError.emit();
-        }
+        (res: any) => this.refreshData.emit(),
+        (err) => this.authError.emit()
       );
     }
   }

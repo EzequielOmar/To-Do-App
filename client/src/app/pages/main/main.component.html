@@ -25,7 +25,7 @@
         [readonly]="readonly"
         (folderSelect)="selectedFid = $event"
         (refreshData)="getData()"
-        (authError)="redirectToError()"
+        (authError)="accessTokenExpired()"
         (readonlyFalse)="updateNames()"
         #folderList
       >
@@ -37,7 +37,7 @@
         [folder]="getCurrentFolder()"
         [readonly]="readonly"
         (refreshData)="getData()"
-        (authError)="redirectToError()"
+        (authError)="accessTokenExpired()"
         (readonlyFalse)="updateNames()"
         #taskList
       ></app-task-list>

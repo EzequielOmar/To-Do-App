@@ -26,11 +26,7 @@ export class MainComponent implements OnInit {
   @ViewChild('taskList') taskList?: TaskListComponent;
   @ViewChild('modifUserName') modifUserName?: ElementRef<Input>;
 
-  constructor(
-    private ds: DataService,
-    private router: Router,
-    private auth: AuthService
-  ) {}
+  constructor(private ds: DataService, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.getData();
@@ -67,33 +63,11 @@ export class MainComponent implements OnInit {
       : '';
   }
 
-  //service call
-  async getData() {
-    this.spinner = true;
-    try {
-      await this.ds
-        .getAllUserData()
-        .then((res: any) => {
-          this.userData = {};
-          this.userData = res.data.User;
-        })
-        .finally(() => {
-          this.spinner = false;
-          this.readonly = true;
-        });
-    } catch (err) {
-      this.redirectToError();
-    }
-  }
-
+  //service calls
   updateUserName(name: string) {
     this.ds.updateUserName(name).subscribe(
-      (res: any) => {
-        this.getData();
-      },
-      (err) => {
-        this.redirectToError();
-      }
+      (res: any) => this.getData(),
+      (err) => this.accessTokenExpired()
     );
   }
 
@@ -108,10 +82,27 @@ export class MainComponent implements OnInit {
 
   logOut() {
     this.auth.signOut();
-    this.router.navigate(['login']);
   }
 
-  redirectToError() {
-    this.logOut();
+  accessTokenExpired() {
+    this.auth.reloadTokens();
+  }
+
+  async getData() {
+    this.spinner = true;
+    try {
+      await this.ds
+        .getAllUserData()
+        .then((res: any) => {
+          this.userData = {};
+          this.userData = res.data.User;
+        })
+        .finally(() => {
+          this.spinner = false;
+          this.readonly = true;
+        });
+    } catch (err) {
+      this.accessTokenExpired();
+    }
   }
 }
