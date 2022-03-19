@@ -19,21 +19,21 @@ export class UserResolver {
   constructor(private fs: FolderService, private us: UserService) {}
 
   @Query(() => User)
-  async User(@CurrentUser() user: any) {
-    return this.us.list(user.thirdPartyId);
+  async User(@CurrentUser() prov_id: any) {
+    return this.us.list(prov_id);
   }
 
   @Mutation(() => User)
   async updateUserName(
-    @CurrentUser() user: any,
+    @CurrentUser() prov_id: any,
     @Args('name', { type: () => String }) name: string,
   ) {
-    return this.us.update(user.thirdPartyId, name);
+    return this.us.update(prov_id, name);
   }
 
   @Mutation(() => User)
-  async deleteUser(@CurrentUser() user: any) {
-    await this.us.delete(user.thirdPartyId).then((r) => r);
+  async deleteUser(@CurrentUser() prov_id: any) {
+    await this.us.delete(prov_id).then((r) => r);
   }
 
   @ResolveField('ufolders', () => [Folder])

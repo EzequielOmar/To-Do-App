@@ -22,18 +22,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   /**
-   * This middleware runs on each call to the server. It automatically decode the jwt and pass it.
+   * This middleware automatically decode the accessToken and throw unauthorized error if expired.
    * @param request request made from the client
    * @param payload payload decoded internly from the request jwt
    * @param done callback
    */
   async validate(request: any, payload: any, done: VerifyCallback) {
     try {
-      //check if the user from the jwt exists on the database, otherwise thwor error
-      const exists = await this.us.exists(payload.thirdPartyId);
-      if (!exists) throw new Error('User from request does not exist.');
-      //save the user data on request to pass it to CurrentUser
-      request.user = payload;
       done(null, payload);
     } catch (err) {
       throw new UnauthorizedException('unauthorized', err.message);
@@ -42,16 +37,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 }
 
 /**
- * This function gets the user data from the validate function middleware,
- * and pass it to the resolver as a param
+ * This function gets the user provide ir from the http only secure cookie 'prov_id'
+ * And send it to the resolvers with in the CurrentUser variable.
  */
 export const CurrentUser = createParamDecorator(
   (data: any, context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
-    //get user data
-    const user = ctx.getContext().req.user;
-    //unset the data from the request
-    ctx.getContext().req.user = undefined;
-    return user;
+    return ctx.getContext().req.cookies['prov_id'];
   },
 );

@@ -18,17 +18,9 @@ export class UserService {
    * @param provId google id
    * @returns Promise<User> or throw error
    */
-  async getOrCreateUser(provId: string, name: string): Promise<User> {
-    try {
-      let exists = await this.exists(provId);
-      if (!exists) {
-        const newUser = new this.UserModel({ provId: provId, name: name });
-        exists = await newUser.save();
-      }
-      return exists;
-    } catch (err: any) {
-      throw err;
-    }
+  async createUser(provId: string, name: string): Promise<User> {
+    const newUser = new this.UserModel({ provId: provId, name: name });
+    return newUser.save();
   }
 
   update(provId: string, name: string) {

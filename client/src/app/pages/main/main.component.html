@@ -1,24 +1,48 @@
-<div class="container d-flex flex-wrap justify-content-center text-center align-items-center">
+<div
+  class="container d-flex flex-wrap justify-content-center text-center align-items-center"
+>
   <div class="p-4 row w-100 justify-content-center">
     <div class="col-md-6">
       <!--Owner`s name/input-->
       <div class="row justify-content-center">
-        <input [readonly]="readonly" (change)="updateUserName(modifUserName.value)" (dblclick)="updateNames()"
-          #modifUserName placement="right" ngbTooltip="Double click to modify" type="text"
-          class="bg-third border border-secondary rounded w-auto text-start input-bar" value="{{userData?.name}}"
-          aria-label="task input name" aria-describedby="button-addon1">
+        <input
+          [readonly]="readonly"
+          (change)="updateUserName(modifUserName.value)"
+          (dblclick)="updateNames()"
+          #modifUserName
+          placement="right"
+          ngbTooltip="Double click to modify"
+          type="text"
+          class="bg-third border border-secondary rounded w-auto text-start input-bar"
+          value="{{ userData?.name }}"
+          aria-label="task input name"
+          aria-describedby="button-addon1"
+        />
       </div>
       <!--FOLDERS-->
-      <app-folder-list [folders]="userData?.ufolders" [readonly]="readonly" (folderSelect)="selectedFid = $event"
-        (refreshData)=" getData()" (authError)="redirectToError()" (readonlyFalse)="updateNames()" #folderList>
+      <app-folder-list
+        [folders]="userData?.ufolders"
+        [readonly]="readonly"
+        (folderSelect)="selectedFid = $event"
+        (refreshData)="getData()"
+        (authError)="redirectToError()"
+        (readonlyFalse)="updateNames()"
+        #folderList
+      >
       </app-folder-list>
     </div>
     <!--TASKS-->
     <div class="col-md-6">
-      <app-task-list [folder]="getCurrentFolder()" [readonly]="readonly" (refreshData)="getData()"
-        (authError)="redirectToError()" (readonlyFalse)="updateNames()" #taskList></app-task-list>
+      <app-task-list
+        [folder]="getCurrentFolder()"
+        [readonly]="readonly"
+        (refreshData)="getData()"
+        (authError)="redirectToError()"
+        (readonlyFalse)="updateNames()"
+        #taskList
+      ></app-task-list>
     </div>
-    <div id="account" class="row w-100 align-items-center pt-4 ">
+    <div id="account" class="row w-100 align-items-center pt-4">
       <!--Spinner-->
       <div *ngIf="spinner" class="clearfix">
         <div class="spinner-border text-secondary" role="status">
@@ -28,7 +52,7 @@
       <!--Account manage-->
       <div class="w-100 text-end">
         <span (click)="logOut()" class="pointer">Log Out</span>
-        <br>
+        <br />
         <span (click)="deleteUser()" class="pointer">Delete Account</span>
       </div>
     </div>

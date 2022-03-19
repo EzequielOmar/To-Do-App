@@ -1,30 +1,35 @@
-import { Controller, Get, UseGuards, Res, Req } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Res, Req, Post, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
+import { UserService } from '../user/user.service';
+import { AuthService } from './services/auth.service';
 
 @Controller('')
 export class AuthController {
-  /**
-   * Resolver to begin login process with google
-   * It redirects internly to the googleLoginCallback
-   */
-  @Get('login')
-  @UseGuards(AuthGuard('google'))
-  googleLogin() {
-    // initiates the Google OAuth2 login flow
-  }
+  constructor(private us: UserService, private auth: AuthService) {}
 
-  /**
-   * Once the user is logged in (or registered and created on db), jwt created,
-   * if the process went right and the jwt created, redirects to main page
-   * passing the jwt by get url to the client.
-   * if not, go back to client`s login page
-   */
-  @Get('google/redirect')
-  @UseGuards(AuthGuard('google'))
-  googleLoginCallback(@Req() req, @Res() res) {
-    // handles the Google OAuth2 callback
-    const jwt: string = req.user.jwt;
-    if (jwt) res.redirect('https://eov-todo-client.herokuapp.com/?token=' + jwt);
-    else res.redirect('https://eov-todo-client.herokuapp.com/login');
+  @Post('redirect')
+  async googleLoginCallback(@Req() req, @Res() res: Response) {
+    //if no body id, return error
+    if (!req.body.id) res.status(HttpStatus.FORBIDDEN).send('No id provided');
+    //get or create user
+    let userExists = await this.us.exists(req.body.id);
+    if (userExists) res.status(HttpStatus.ACCEPTED);
+    else {
+      userExists = await this.us.createUser(
+        req.body.id,
+        req.body.displayName ?? '',
+      );
+      res.status(HttpStatus.CREATED);
+    }
+    //set secure http only cookie with user provid
+    res.cookie('prov_id', userExists.provId, {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'none',
+      //* expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
+      expires: new Date(Date.now() + 3600 * 1000 * 24 * 1 * 1),
+    });
+    //return accessToken and reloadToken in body
+    return res.send(await this.auth.createUserTokens(userExists.provId));
   }
 }

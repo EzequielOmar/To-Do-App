@@ -6,7 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 /**
  * This is a neccesary wrapper for the jwtMiddleware.
  * It get the execution context and create a gql execution context
- * wich is neccesary in order to access request data in grapql request.
+ * wich is neccesary in order to access request data in graphql request.
  */
 export class jwtGuard extends AuthGuard('jwt') {
   getRequest(context: ExecutionContext) {

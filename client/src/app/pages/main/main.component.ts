@@ -1,6 +1,5 @@
 import {
   Component,
-  ContentChild,
   ElementRef,
   HostListener,
   Input,
@@ -10,8 +9,8 @@ import {
 import { Router } from '@angular/router';
 import { FolderListComponent } from 'src/app/components/folder-list/folder-list.component';
 import { TaskListComponent } from 'src/app/components/task-list/task-list.component';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataService } from '../../services/data/data.service';
-import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'main',
@@ -27,9 +26,11 @@ export class MainComponent implements OnInit {
   @ViewChild('taskList') taskList?: TaskListComponent;
   @ViewChild('modifUserName') modifUserName?: ElementRef<Input>;
 
-  constructor(private ds: DataService, private router: Router) {
-  //  this.logOrRedirectToLogin();
-  }
+  constructor(
+    private ds: DataService,
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.getData();
@@ -69,17 +70,14 @@ export class MainComponent implements OnInit {
   //service call
   async getData() {
     this.spinner = true;
-    console.log('getData');
     try {
       await this.ds
         .getAllUserData()
         .then((res: any) => {
-          console.log('getData then');
           this.userData = {};
           this.userData = res.data.User;
         })
         .finally(() => {
-          console.log('getData final');
           this.spinner = false;
           this.readonly = true;
         });
@@ -109,25 +107,11 @@ export class MainComponent implements OnInit {
   }
 
   logOut() {
-    SessionService.logOut();
+    this.auth.signOut();
     this.router.navigate(['login']);
   }
 
-  /**
-   * Close the current session (unset sessionStoragge vars)
-   * And refirect to login, showing the token expired error message
-   */
   redirectToError() {
-    SessionService.forceLogOut();
-    this.router.navigate(['login']);
-  }
-
-  /**
-   * Check for a current open session
-   * try to log in passing the current url (that may have the token value from server)
-   * if bolth fail, redirect to login
-   */
-  private logOrRedirectToLogin() {
-    if (!SessionService.logged()) this.router.navigate(['login']);
+    this.logOut();
   }
 }

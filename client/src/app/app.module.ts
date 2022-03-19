@@ -11,7 +11,6 @@ import { GraphQLModule } from './graphql.module';
 import { MainComponent } from './pages/main/main.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DataService } from './services/data/data.service';
-import { SessionService } from './services/session/session.service';
 import { FolderListComponent } from './components/folder-list/folder-list.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import {
@@ -19,6 +18,8 @@ import {
   SocialAuthServiceConfig,
   SocialLoginModule,
 } from 'angularx-social-login';
+import { redirectUnauthenticatedGuardService } from './guards/redirectUnauthenticated';
+import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {
   ],
   providers: [
     DataService,
-    SessionService,
+    AuthService,
+    redirectUnauthenticatedGuardService,
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

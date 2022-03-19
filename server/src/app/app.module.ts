@@ -17,13 +17,14 @@ import { UserModule } from './user/user.module';
     TaskModule,
     AuthModule,
     GraphQLModule.forRoot({
+      debug: false,
+      playground: false,
       typePaths: ['./**/*.graphql'],
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
-      playground: true,
-      debug: false,
+      cors: false,
     }),
   ],
   providers: [],

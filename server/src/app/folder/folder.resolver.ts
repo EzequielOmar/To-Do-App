@@ -20,10 +20,10 @@ export class FolderResolver {
 
   @Mutation(() => Folder)
   async createFolder(
-    @CurrentUser() user: any,
+    @CurrentUser() prov_id: any,
     @Args('name', { type: () => String }) name: string,
   ) {
-    return this.fs.create(name, user.thirdPartyId);
+    return this.fs.create(name, prov_id);
   }
 
   @Mutation(() => Folder)

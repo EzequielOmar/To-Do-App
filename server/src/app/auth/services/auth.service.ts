@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 import 'dotenv/config';
+import * as bcrypt from 'bcrypt';
 
 export enum Provider {
   GOOGLE = 'google',
@@ -9,20 +10,26 @@ export enum Provider {
 @Injectable()
 export class AuthService {
   private readonly JWT_SECRET_KEY = process.env.JWT_SECRET_PASS;
+  private readonly salts = 7;
 
-  /**
-   * Code a jwt with a provider ID and a provider name (only google for this app)
-   */
-  async codeJwt(thirdPartyId: string, provider: Provider): Promise<string> {
+  async createUserTokens(provId: string): Promise<{
+    accessToken: string;
+    reloadToken: string;
+  }> {
     try {
-      const payload = {
-        thirdPartyId,
-        provider,
-      };
-      const jwt: string = sign(payload, this.JWT_SECRET_KEY, {
-        expiresIn: 3600,
+      //create accessToken with no data, only expires date
+      const accessToken: string = sign({}, this.JWT_SECRET_KEY, {
+        expiresIn: 360,
       });
-      return jwt;
+      const hashed_id = await bcrypt.hash(provId, this.salts);
+      const reloadToken: string = sign(
+        { hashed_id: hashed_id },
+        this.JWT_SECRET_KEY,
+      );
+      return {
+        accessToken: accessToken,
+        reloadToken: reloadToken,
+      };
     } catch (err) {
       throw new InternalServerErrorException('validateOAuthLogin', err.message);
     }
