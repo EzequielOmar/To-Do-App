@@ -1,60 +1,73 @@
-<div
-  class="container d-flex flex-wrap justify-content-center text-center align-items-center"
->
-  <div class="p-4 row w-100 justify-content-center">
-    <div class="col-md-6">
-      <!--Owner`s name/input-->
-      <div class="row justify-content-center">
-        <input
-          [readonly]="readonly"
-          (change)="updateUserName(modifUserName.value)"
-          (dblclick)="updateNames()"
-          #modifUserName
-          placement="right"
-          ngbTooltip="Double click to modify"
-          type="text"
-          class="bg-third border border-secondary rounded w-auto text-start input-bar"
-          value="{{ userData?.name }}"
-          aria-label="task input name"
-          aria-describedby="button-addon1"
-        />
-      </div>
-      <!--FOLDERS-->
-      <app-folder-list
-        [folders]="userData?.ufolders"
+<!-- top - Logo -->
+<div class="row w-100 d-flex justify-content-center text-center py-5">
+  <img class="tasky" src="assets/Tasky.png" alt="app-logo" />
+  <h2 class="text-blue_dark">Just another To Do App...</h2>
+</div>
+<!--app-->
+<div class="d-flex flex-wrap w-100 justify-content-center py-5">
+  <!--All Folders List Card-->
+  <div class="sized-card-blue_contrast">
+    <!--User Name Input-->
+    <div class="userName sized-card-blue_dark">
+      <input
         [readonly]="readonly"
-        (folderSelect)="selectedFid = $event"
-        (refreshData)="getData()"
-        (authError)="accessTokenExpired()"
-        (readonlyFalse)="updateNames()"
-        #folderList
-      >
-      </app-folder-list>
+        (change)="updateUserName(modifUserName.value)"
+        (dblclick)="updateNames()"
+        #modifUserName
+        placement="top"
+        ngbTooltip="Double click to modify"
+        type="text"
+        value="{{ userData?.name }}"
+        aria-label="task input name"
+        aria-describedby="button-addon1"
+      />
     </div>
-    <!--TASKS-->
-    <div class="col-md-6">
-      <app-task-list
-        [folder]="getCurrentFolder()"
-        [readonly]="readonly"
-        (refreshData)="getData()"
-        (authError)="accessTokenExpired()"
-        (readonlyFalse)="updateNames()"
-        #taskList
-      ></app-task-list>
-    </div>
-    <div id="account" class="row w-100 align-items-center pt-4">
-      <!--Spinner-->
-      <div *ngIf="spinner" class="clearfix">
-        <div class="spinner-border text-secondary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <!--Account manage-->
-      <div class="w-100 text-end">
-        <span (click)="logOut()" class="pointer">Log Out</span>
-        <br />
-        <span (click)="deleteUser()" class="pointer">Delete Account</span>
-      </div>
+    <!--FOLDERS-->
+    <app-folder-list
+      [folders]="userData?.ufolders"
+      [readonly]="readonly"
+      (refreshData)="getData()"
+      (authError)="accessTokenExpired()"
+      (readonlyFalse)="updateNames()"
+      #folderList
+    >
+    </app-folder-list>
+  </div>
+  <!-- Add folder Btn-->
+  <div class="w-100">
+    <button
+      id="addFolder"
+      class="sized-card-blue_dark m-auto mt-4 "
+      type="button"
+      placement="bottom"
+      ngbTooltip="Add a new Folder"
+    >
+      <img src="assets/plus.png" alt="plus" />
+      <input
+        (change)="addFolder(addFolderInput)"
+        #addFolderInput
+        type="text"
+        placeholder="Add Folder"
+        aria-label="folder add input"
+        aria-describedby="button-addon1"
+      />
+    </button>
+  </div>
+</div>
+<!--bottom-->
+<div class="w-100 justify-content-center text-center pb-5">
+  <!--Spinner-->
+  <div class="clearfix" style="height: 30px !important">
+    <div *ngIf="spinner" class="spinner-border text-secondary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
+  <!--Account manage-->
+  <button class="pointer account" (click)="logOut()">
+    <span>Log Out</span>
+  </button>
+  <br />
+  <button class="pointer account" (click)="deleteUser()">
+    <span class="pointer">Delete Account</span>
+  </button>
 </div>

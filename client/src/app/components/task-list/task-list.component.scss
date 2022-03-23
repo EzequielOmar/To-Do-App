@@ -1,0 +1,61 @@
+@import "../../../styles.scss";
+
+input {
+  color: $blue_dark;
+  text-align: start !important;
+  padding: 0 1rem;
+}
+
+::placeholder {
+  color: $blue_dark;
+  opacity: 1;
+}
+
+//checkbox
+/* Hide the browser's default checkbox */
+input[type="checkbox"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  height: 20px !important;
+  width: 20px !important;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background: radial-gradient(50% 50% at 50% 50%, #e5e5e5 64.58%, #344f93 100%);
+  border-radius: 10px;
+  border: 1px solid #344f93;
+}
+
+/* When the checkbox is checked, add a blue background */
+input[type="checkbox"]:checked ~ .checkmark {
+  background: radial-gradient(50% 50% at 50% 50%, #21c545 64.06%, #344f93 100%);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+input[type="checkbox"]:checked ~ .checkmark:after {
+  display: block;
+}
+
+#addTask {
+  background: none;
+  width: 98% !important;
+  color: $blue_dark;
+  height: 1.5rem;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.rotate {
+  transform: rotate(45deg);
+}

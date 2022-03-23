@@ -20,7 +20,6 @@ import { DataService } from '../../services/data/data.service';
 export class MainComponent implements OnInit {
   userData?: any;
   spinner: boolean = false;
-  selectedFid?: string;
   readonly: boolean = true;
   @ViewChild('folderList') folderList?: FolderListComponent;
   @ViewChild('taskList') taskList?: TaskListComponent;
@@ -52,18 +51,17 @@ export class MainComponent implements OnInit {
     this.readonly = false;
   }
 
-  /**
-   * @returns the current selected folder, or an empty string
-   */
-  getCurrentFolder(): string {
-    return this.selectedFid
-      ? this.userData?.ufolders.filter(
-          (f: any) => f._id === this.selectedFid
-        )[0]
-      : '';
+  //service calls
+  addFolder(input: HTMLInputElement) {
+    if (input.value) {
+      this.ds.addFolder(input.value).subscribe(
+        (res: any) => this.getData(),
+        (err) => this.accessTokenExpired()
+      );
+      input.value = '';
+    }
   }
 
-  //service calls
   updateUserName(name: string) {
     this.ds.updateUserName(name).subscribe(
       (res: any) => this.getData(),
@@ -72,12 +70,9 @@ export class MainComponent implements OnInit {
   }
 
   deleteUser() {
-    this.ds
-      .deleteUser()
-      .toPromise()
-      .finally(() => {
-        this.logOut();
-      });
+    this.ds.deleteUser().subscribe((e: any) => {
+      if (Object.keys(e.data)[0] === 'deleteUser') this.logOut();
+    });
   }
 
   logOut() {

@@ -1,0 +1,28 @@
+@import "../../../styles.scss";
+
+li {
+  input {
+    color: $blue_dark !important;
+    font-size: 24px;
+    text-align: start !important;
+  }
+  .deleteFolder {
+    img {
+      transform: rotate(45deg);
+      margin-top: 3px;
+    }
+  }
+  .openTasks {
+    span {
+      height: 1.1rem;
+    }
+  }
+  height: 5rem;
+  padding: 0.2rem 2rem 0.2rem 2rem;
+  margin: 1rem 0 0 0 !important;
+  border-radius: 5px;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}

@@ -16,10 +16,9 @@ import { DataService } from 'src/app/services/data/data.service';
   styleUrls: ['./folder-list.component.scss'],
 })
 export class FolderListComponent {
-  selectedFolder: any;
+  openFolders: string[] = [];
   @Input() readonly?: boolean;
   @Input() folders?: any;
-  @Output() folderSelect: EventEmitter<string> = new EventEmitter();
   @Output() refreshData: EventEmitter<any> = new EventEmitter();
   @Output() authError: EventEmitter<any> = new EventEmitter();
   @Output() readonlyFalse: EventEmitter<any> = new EventEmitter();
@@ -31,24 +30,26 @@ export class FolderListComponent {
     this.readonlyFalse.emit();
   }
 
-  selectFolder(folder: any) {
-    this.selectedFolder === folder
-      ? (this.selectedFolder = undefined)
-      : (this.selectedFolder = folder);
-    this.folderSelect.emit(this.selectedFolder?._id);
+  emitRefreshData() {
+    this.refreshData.emit();
+  }
+
+  emitAuthError() {
+    this.authError.emit();
+  }
+
+  openFolder(folder: any) {
+    if (this.openFolders.includes(folder._id))
+      this.openFolders.splice(this.openFolders.indexOf(folder._id), 1);
+    else this.openFolders.push(folder._id);
+  }
+
+  getDoneTasks(folder: any) {
+    const doneTasks = folder.ftasks.filter((t: any) => t.done);
+    return doneTasks.length;
   }
 
   //service calls
-  addFolder(input: HTMLInputElement) {
-    if (input.value) {
-      this.ds.addFolder(input.value).subscribe(
-        (res: any) => this.refreshData.emit(),
-        (err) => this.authError.emit()
-      );
-      input.value = '';
-    }
-  }
-
   modifFolder(folder: any, newFname: string) {
     if (newFname && folder.folder !== newFname) {
       this.ds.updateFolder(folder._id, newFname).subscribe(

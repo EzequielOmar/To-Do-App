@@ -28,9 +28,11 @@ export class AuthService {
   }> {
     const decodedToken = decode(reloadToken);
     //compare cookie prov_id value, with hashed prov_id on reloadToken
-    const matches = (
-      await bcrypt.compare(prov_id, decodedToken['hashed_id'])
-    ).valueOf();
+    let matches = false;
+    if (prov_id && decodedToken['hashed_id'])
+      matches = (
+        await bcrypt.compare(prov_id, decodedToken['hashed_id'])
+      ).valueOf();
     //if matches return new tokens, else return empty strings
     if (matches) return this.createTokens(prov_id);
     return { accessToken: '', reloadToken: '' };

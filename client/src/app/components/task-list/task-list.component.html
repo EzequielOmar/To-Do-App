@@ -1,36 +1,56 @@
-<!-- TASKS -->
-<!-- task tittle-->
-<div *ngIf="folder">
-  <div class="row justify-content-center">
-    <input readonly type="text" class="bg-third border border-secondary rounded w-auto text-start input-bar"
-      value="{{folder.name}}" aria-label="task input name" aria-describedby="button-addon1">
-  </div>
-  <!-- tasks row -->
-  <ul class="p-0 m-0 list-group">
-    <li *ngFor="let t of folder?.ftasks"
-      class="bg-third rounded row d-flex align-items-center text-capitalize py-2 mt-2 mx-1">
-      <div class="d-flex justify-content-between align-items-center">
-        <!-- done checkbox -->
-        <input (change)="modifTask(t,t.name,!t.done)" class="form-check-input mt-0 mx-1 fs-2 pointer" type="checkbox"
-          [checked]="t.done" placement="top" ngbTooltip="Mark task" aria-label="Checkbox for following text input">
-        <!-- Task name / Input -->
-        <input [readonly]="readonly" (change)="modifTask(t,modifTaskInput.value,t.done)" (dblclick)="updateNames()"
-          #modifTaskInput placement="top" ngbTooltip="Double click to modify" type="text"
-          class="bg-third border-0 py-1 w-100 input-bar" value="{{t.name}}" aria-label="task input name"
-          aria-describedby="button-addon1">
-        <!-- Buttons -->
-        <span class="w-auto">
-          <i (click)="deleteTask(t._id)" class="bi bi-trash w-auto fs-5 pl-4 pointer" placement="top"
-            ngbTooltip="Delete Task"></i>
-        </span>
-      </div>
-    </li>
-  </ul>
-  <!-- new task input-->
-  <div *ngIf="folder" class="input-group my-3">
-    <input (change)="addTask(addTaskInput)" #addTaskInput type="text" class="form-control h-75"
-      placeholder="Add a new task..." aria-label="task add input" aria-describedby="button-addon1">
-    <button class="btn btn-outline-secondary px-1 py-0" type="button"><i class="bi bi-plus fs-4 text-success"
-        placement="bottom" ngbTooltip="New Task"></i></button>
-  </div>
-</div>
+<ul class="p-0 m-0 list-group">
+  <li
+    *ngFor="let t of folder?.ftasks"
+    class="bg-blue_ligth rounded row d-flex align-items-center py-2 mt-2 mx-1"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Done Checkbox -->
+      <input
+        (click)="modifTask(t, t.name, !t.done)"
+        type="checkbox"
+        [checked]="t.done"
+      />
+      <span class="checkmark"></span>
+      <!-- Task Name -->
+      <input
+        [readonly]="readonly"
+        (change)="modifTask(t, modifTaskInput.value, t.done)"
+        (dblclick)="updateNames()"
+        #modifTaskInput
+        placement="top"
+        ngbTooltip="Double click to modify"
+        type="text"
+        class="bg-none border-0 py-1 w-100 px-4"
+        value="{{ t.name }}"
+        aria-label="task input name"
+        aria-describedby="button-addon1"
+      />
+      <!-- Delete Task -->
+      <img
+        (click)="deleteTask(t._id)"
+        src="assets/plus-blue.png"
+        class="pointer rotate"
+        alt="plus"
+        placement="top"
+        ngbTooltip="Delete Task"
+      />
+    </div>
+  </li>
+  <!-- New Task Input -->
+  <li
+    id="addTask"
+    class="rounded px-1 mt-2 mx-1 w-100 d-flex align-items-center"
+    placement="top"
+    ngbTooltip="Add a new Task"
+  >
+    <img src="assets/plus-blue.png" alt="plus" />
+    <input
+      (change)="addTask(addTaskInput)"
+      #addTaskInput
+      type="text"
+      placeholder="New Task"
+      aria-label="task add input"
+      aria-describedby="button-addon1"
+    />
+  </li>
+</ul>

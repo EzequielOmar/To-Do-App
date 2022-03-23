@@ -26,7 +26,7 @@ export class AuthController {
     res.cookie('prov_id', userExists.provId, {
       secure: true,
       httpOnly: true,
-      domain: process.env.CLIENT_HOST,
+      sameSite: 'none',
       //* expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
       expires: new Date(Date.now() + 3600 * 1000 * 24 * 1 * 1),
     });

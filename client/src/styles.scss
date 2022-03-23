@@ -1,29 +1,137 @@
 /* You can add global styles to this file, and also import other style files */
-$primary: #c3c3c3;
-$secondary: #0066ff;
-$third: #ededed;
-$danger: #ff0000;
+
+//colors
+$grey: #00000040;
+$blue_dark: #344f93;
+$blue_bg: #99b1d6;
+$blue_contrast: #afc2df;
+$blue_ligth: #ebfffe;
 
 $theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "third": $third,
-  "danger": $danger,
+  "blue_dark": $blue_dark,
+  "blue_bg": $blue_bg,
+  "blue_contrast": $blue_contrast,
+  "blue_ligth": $blue_ligth,
 );
 
-.pointer {
-  cursor: pointer;
+//fonts
+@font-face {
+  font-family: "Tajawal-bold";
+  src: local("Tajawal"),
+    url(./assets/Tajawal/Tajawal-Bold.ttf) format("truetype");
 }
 
-.input-bar {
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="45"><text x="7" y="21" style="font: 22px Arial">/</text></svg>')
-    no-repeat;
-  padding-left: 1rem !important;
-  padding: 1rem 0;
-  height: 1.4rem;
+@font-face {
+  font-family: "Tajawal-ligth";
+  src: local("Tajawal"),
+    url(./assets/Tajawal/Tajawal-Light.ttf) format("truetype");
+}
+
+//general
+body {
+  overflow-x: hidden;
+  background: $blue_bg !important;
+  font-family: "Tajawal" !important;
+  color: $blue_dark !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $blue_dark;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: lighten($color: $blue_dark, $amount: 5);
+}
+
+input {
+  &:focus {
+    outline: none !important;
+  }
+  cursor: pointer;
+  height: 100% !important;
+  width: 100% !important;
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  vertical-align: text-top;
+}
+
+::placeholder {
+  color: $blue_ligth ;
+  opacity: 1;
+}
+
+button {
+  border: none;
 }
 
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
-/* Bootstrap Icons */
-@import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+
+//classes
+.tasky {
+  margin: 1rem;
+  width: 110px !important;
+}
+
+h2 {
+  -webkit-text-stroke-width: thin;
+  font-size: 19px !important;
+  margin: 3px;
+  font-family: "Tajawal-bold";
+}
+
+.card-blue_dark {
+  &:hover {
+    background: lighten($color: $blue_dark, $amount: 5);
+  }
+  color: $blue_ligth;
+  background: $blue_dark;
+  border-radius: 5px;
+}
+
+.sized-card-blue_contrast {
+  background: $blue_contrast;
+  -webkit-box-shadow: 0 30px 60px 0 $blue_dark;
+  box-shadow: 0 15px 30px 0 $blue_dark;
+  text-align: center;
+  -webkit-border-radius: 26px;
+  border-radius: 26px;
+  width: 320px;
+  padding: 1rem;
+  font-family: "Tajawal-ligth";
+  @include media-breakpoint-up(sm) {
+    width: 420px;
+  }
+  @include media-breakpoint-up(md) {
+    width: 520px;
+  }
+}
+
+.sized-card-blue_dark {
+  @extend .card-blue_dark;
+  width: 290px;
+  @include media-breakpoint-up(sm) {
+    width: 390px;
+  }
+  @include media-breakpoint-up(md) {
+    width: 490px;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}

@@ -62,17 +62,23 @@ export class AuthService {
     body = body.set('reloadToken', sessionStorage.getItem('reloadToken') ?? '');
     this.http
       .post(this.server_host + '/reloadTokens', body, httpOptions)
-      .subscribe((res: any) => {
-        if (!res.body.accessToken || !res.body.reloadToken) {
-          this.error.next(
-            'Token expired, session reload fail. Please log in again.'
-          );
-          this.signOut();
-        } else {
-          sessionStorage.setItem('accessToken', res.body.accessToken);
-          sessionStorage.setItem('reloadToken', res.body.reloadToken);
+      .subscribe(
+        (res: any) => {
+          if (!res.body.accessToken || !res.body.reloadToken) {
+            this.error.next(
+              'Token expired, session reload fail. Please log in again.'
+            );
+            this.signOut();
+          } else {
+            sessionStorage.setItem('accessToken', res.body.accessToken);
+            sessionStorage.setItem('reloadToken', res.body.reloadToken);
+          }
+        },
+        (err) => {
+          console.log(err);
+          //    this.signOut();
         }
-      });
+      );
   }
 
   private getTokens() {
@@ -86,9 +92,8 @@ export class AuthService {
     let body = new HttpParams();
     body = body.set('id', this.user?.id ?? '');
     body = body.set('displayName', this.user?.name ?? '');
-    this.http
-      .post(this.server_host + '/redirect', body, httpOptions)
-      .subscribe((res: any) => {
+    this.http.post(this.server_host + '/redirect', body, httpOptions).subscribe(
+      (res: any) => {
         if (!res.body.accessToken || !res.body.reloadToken)
           this.error.next('Upss, something went wrong.');
         else {
@@ -96,7 +101,12 @@ export class AuthService {
           sessionStorage.setItem('reloadToken', res.body.reloadToken);
           this.signedIn.next(true);
         }
-      });
+      },
+      (err) => {
+        console.log(err);
+        //this.signOut();
+      }
+    );
   }
 
   private addWindowStorageEvents() {

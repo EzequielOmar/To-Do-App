@@ -1,48 +1,43 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-
-/* BASIC */
+@import "../../../styles.scss";
 
 a {
-  color: #ffffff;
   display: inline-block;
   text-decoration: none;
   font-weight: 400;
 }
 
-h2 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  display: inline-block;
-  margin: 15px 8px 10px 8px;
-  color: #000000;
-  width: 100%;
+button {
+  * {
+    vertical-align: text-top;
+  }
+  span {
+    font-size: medium;
+  }
+  border-radius: 5px;
+  padding: 0.6rem !important;
+  min-width: 220px !important;
+  margin: 0.5rem !important;
+}
+
+button:hover {
+  background: lighten($color: $blue_dark, $amount: 5) !important;
+  border-color: $blue_ligth !important;
 }
 
 /* STRUCTURE */
+:host {
+  & > div {
+    padding: 2rem 1rem;
 
-.wrapper {
+  }
+  span {
+    font-size: small;
+    font-weight: bold;
+  }
+  height: 100vh;
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
-  width: 100%;
-  height: 100vh;
-  padding: 20px;
-}
-
-.card {
-  background-color: #f6f6f6;
-}
-
-#formFooter {
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  background-color: #f6f6f6;
-  padding: 25px;
-  text-align: -webkit-center;
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
 }
 
 /* ANIMATIONS */
