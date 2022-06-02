@@ -45,7 +45,7 @@ export class AuthService {
     try {
       //create accessToken with no data, only expires date
       const accessToken: string = sign({}, this.JWT_SECRET_KEY, {
-        expiresIn: 10,
+        expiresIn: 60 * 60 * 3, //3hs
       });
       const hashed_id = await bcrypt.hash(prov_id, this.salts);
       const reloadToken: string = sign(

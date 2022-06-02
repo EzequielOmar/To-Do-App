@@ -27,8 +27,7 @@ export class AuthController {
       secure: true,
       httpOnly: true,
       sameSite: 'none',
-      //* expires: new Date(Date.now() + 3600 * 1000 * 24 * 180 * 1),
-      expires: new Date(Date.now() + 3600 * 1000 * 24 * 1 * 1),
+      expires: new Date(Date.now() + 3600 * 1000 * 24 * 90 * 1), //like 3 months
     });
     //return accessToken and reloadToken in body
     return res.send(await this.auth.createUserTokens(userExists.provId));
